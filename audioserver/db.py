@@ -7,7 +7,7 @@ Base = declarative_base()
 
 
 def connect(database_uri):
-    Engine = create_engine(database_uri, echo=True)
+    Engine = create_engine(database_uri)
     Session = sessionmaker(bind=Engine)
 
     return Session(), Engine
