@@ -8,5 +8,6 @@ class AudioFile(db.Base):
 
     id = sqla.Column(sqla.Integer, primary_key=True)
     uuid = sqla.Column(sqla.String, nullable=False)
-    filename = sqla.Column(sqla.String, nullable=False)
+    name = sqla.Column(sqla.String, nullable=False)
     duration = sqla.Column(sqla.Integer, nullable=False)
+    mime_type = sqla.Column(sqla.String, nullable=False)
