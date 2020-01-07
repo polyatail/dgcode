@@ -75,6 +75,6 @@ def run(ctx, port, path):
 
     try:
         log.info(f"cli.run: listening on port {port}")
-        web.run_app(app, port=port)
+        web.run_app(app, port=port, access_log=log)
     except KeyboardInterrupt:
         log.info(f"cli.run: caught ctrl+c, cleaning up and quitting...")

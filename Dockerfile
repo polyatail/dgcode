@@ -32,4 +32,4 @@ RUN ["audioserver", "init"]
 # run API on port 5000
 EXPOSE 5000
 
-CMD ["audioserver", "run", "--port", "5000", "--path", "/root/files"]
+CMD ["audioserver", "-vvv", "run", "--port", "5000", "--path", "/root/files"]
