@@ -4,7 +4,7 @@ import os
 from aiohttp import web
 import click
 
-from audioserver import api, log
+from audioserver import api, db, log
 from audioserver.exceptions import AudioServerException
 from audioserver.storage import LocalAudioStorage
 from audioserver.version import __version__
@@ -37,17 +37,14 @@ def init(ctx, path):
     elif not os.path.isdir(path):
         raise AudioServerException("Path exists and is not a directory")
 
-    # set path to database
-    from audioserver import config
-
-    config.SQLALCHEMY_DB_URI = f"sqlite:///{os.path.join(path, 'db.sqlite3')}"
+    session, engine = db.connect(f"sqlite:///{os.path.join(path, 'db.sqlite3')}")
 
     # create tables
-    from audioserver import db, models
+    from audioserver import models  # noqa
 
     try:
         log.info(f"cli.init: creating empty tables")
-        db.Base.metadata.create_all(db.Engine)
+        db.Base.metadata.create_all(engine)
     except KeyboardInterrupt:
         log.info(f"cli.init: caught ctrl+c, cleaning up and quitting...")
 
@@ -65,18 +62,14 @@ def run(ctx, port, path):
     if not os.path.isdir(path):
         raise AudioServerException("Path does not exist or is not a directory")
 
-    # set path to database
-    from audioserver import config
-
-    config.SQLALCHEMY_DB_URI = f"sqlite:///{os.path.join(path, 'db.sqlite3')}"
+    # connect to the database
+    session, _ = db.connect(f"sqlite:///{os.path.join(path, 'db.sqlite3')}")
 
     # create a file storage instance
     storage = LocalAudioStorage(path)
 
     # setup middleware, app, and routes
-    from audioserver import db
-
-    middlewares = [api.pass_parameters_factory(db.session, storage)]
+    middlewares = [api.pass_parameters_factory(session, storage)]
     app = web.Application(client_max_size=10 * 1024 ** 2, middlewares=middlewares)
     app.add_routes(api.routes)
 

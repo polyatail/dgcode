@@ -1,1 +1,1 @@
-from audioserver.models.audio_file import AudioFile
+from audioserver.models.audio_file import AudioFile  # noqa
