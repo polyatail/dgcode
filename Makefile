@@ -7,4 +7,4 @@ format:
 test:
 	py.test -v -W ignore::DeprecationWarning tests/
 update_deps:
-	pip-compile --generate-hashess
+	pip-compile --generate-hashes
