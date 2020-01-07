@@ -26,6 +26,10 @@ ADD audioserver /root/audioserver/audioserver
 RUN cd /root/audioserver \
     && pip install .
 
+# initialize an empty database
+RUN ["audioserver", "init"]
+
+# run API on port 5000
 EXPOSE 5000
 
-RUN ["audioserver", "--port", "5000", "--path", "/root/files"]
+CMD ["audioserver", "run", "--port", "5000", "--path", "/root/files"]
