@@ -60,6 +60,9 @@ multidict==4.7.3 \
     --hash=sha256:d1f45e5bb126662ba66ee579831ce8837b1fd978115c9657e32eb3c75b92973d \
     --hash=sha256:ed5f3378c102257df9e2dc9ce6468dabf68bee9ec34969cfdc472631aba00316 \
     # via aiohttp, yarl
+mutagen==1.43.0 \
+    --hash=sha256:3a982d39f1b800520a32afdebe3543f972e83a6ddd0c0198739a161ee705b588 \
+    --hash=sha256:43a7d86d5ef05e2bd5bb8292678b2f9988b729aa440f45d8737ecba105db5182
 packaging==20.0 \
     --hash=sha256:aec3fdbb8bc9e4bb65f0634b9f551ced63983a529d6a8931817d52fdd0816ddb \
     --hash=sha256:fe1d8331dfa7cc0a883b49d75fc76380b2ab2734b220fbb87d774e4fd4b851f8 \
