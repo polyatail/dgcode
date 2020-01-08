@@ -68,6 +68,11 @@ def run(ctx, port, path):
     # create a file storage instance
     storage = LocalAudioStorage(path)
 
+    # from audioserver.models import AudioFile, AudioFileClip, RandomSet
+    # import ipdb
+
+    # ipdb.set_trace()
+
     # setup middleware, app, and routes
     middlewares = [api.pass_parameters_factory(session, storage)]
     app = web.Application(client_max_size=10 * 1024 ** 2, middlewares=middlewares)

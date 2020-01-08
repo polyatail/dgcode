@@ -3,7 +3,11 @@
 The idea is that every class in this file exposes the same interface, but stores audio files in a
 different way. For example, local file storage, storage in redis, storage in S3, etc.
 """
+import io
 import os
+import tempfile
+
+from pydub import AudioSegment
 
 from audioserver.exceptions import AudioServerException
 
@@ -40,6 +44,40 @@ class LocalAudioStorage(object):
 
         with open(path, "rb") as fp:
             return fp.read()
+
+    def get_wav_by_uuid(self, uuid, start=None, stop=None):
+        """Get a fragment of an audio file by UUID, transcoding to WAV if necessary.
+
+        Parameters
+        ----------
+        uuid : `str`
+            The unique identifier for the desired file.
+        start : `int`
+            Beginning position in audio file in seconds.
+        stop : `int`
+            End position in audio file in seconds.
+
+        Returns
+        -------
+        `io.BytesIO` containing the WAV file, raises `AudioServerException` if file not found.
+        """
+        path = os.path.join(self.path, uuid)
+
+        if not os.path.isfile(path):
+            raise AudioServerException(f"File for {uuid} was not found")
+
+        audio = AudioSegment.from_file(path)
+        clip = audio[start * 1000 : stop * 1000]
+        buf = io.BytesIO()
+
+        with tempfile.NamedTemporaryFile() as fp:
+            clip.export(fp.name, format="wav")
+            fp.seek(0)
+            buf.write(fp.read())
+
+        buf.seek(0)
+
+        return buf
 
     def set_file_by_uuid(self, uuid, file_object, force=False):
         """Store the contents of an audio file by UUID.
