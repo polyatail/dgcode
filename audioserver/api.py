@@ -136,7 +136,7 @@ async def list_handler(request):
 
 @routes.get("/info")
 async def info_handler(request):
-    """Handle GET request to list metadata (e.g., name, duration) of existingn audio files.
+    """Handle GET request to list metadata (e.g., name, duration) of existing audio files.
 
     Allows filtering by "name" and "maxduration" when specified in the query string.
 
